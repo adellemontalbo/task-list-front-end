@@ -3,41 +3,42 @@ import PropTypes from 'prop-types';
 
 import './Task.css';
 
-// const Task = ({ id, title, isComplete }) => {
-//   const [complete, setComplete] = useState(isComplete);
-//   const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
-
-//   return (
-//     <li className="tasks__item">
-//       <button
-//         className={`tasks__item__toggle ${buttonClass}`}
-//         onClick={() => setComplete(!complete)}
-//       >
-//         {title}
-//       </button>
-//       <button className="tasks__item__remove button">x</button>
-//     </li>
-//   );
-// };
-
-const Task = (props) => {
-  const [complete, setComplete] = useState(props.isComplete);
+const Task = ({ id, title, isComplete }) => {
+  const [complete, setComplete] = useState(isComplete);
   const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
-  
 
   return (
     <li className="tasks__item">
-    <h1>Title: {props.title} </h1>
-    <h2>Id: {props.id} </h2>
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => setComplete(!complete)}
+        onClick={() => setComplete((complete) => !complete)}
       >
+        {title}
       </button>
       <button className="tasks__item__remove button">x</button>
     </li>
   );
 };
+
+// complete arrow
+
+// const Task = (props) => {
+//   const [complete, setComplete] = useState(props.isComplete);
+//   const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
+
+//   return (
+//     <li className="tasks__item">
+//     <h1>Title: {props.title} </h1>
+//     <h2>Id: {props.id} </h2>
+//       <button
+//         className={`tasks__item__toggle ${buttonClass}`}
+//         onClick={() => setComplete(!complete)}
+//       >
+//       </button>
+//       <button className="tasks__item__remove button">x</button>
+//     </li>
+//   );
+// };
 
 Task.propTypes = {
   id: PropTypes.number.isRequired,
