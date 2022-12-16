@@ -3,22 +3,39 @@ import PropTypes from 'prop-types';
 import Task from './Task';
 import './TaskList.css';
 
-const TaskList = ({ tasks }) => {
-  const getTaskListJSX = (tasks) => {
-    return tasks.map((task) => {
+// const TaskList = ({ tasks }) => {
+//   const getTaskListJSX = (tasks) => {
+//     return tasks.map((task) => {
+//       return (
+//         <Task
+//           key={task.id}
+//           id={task.id}
+//           title={task.title}
+//           isComplete={task.isComplete}
+//           onTaskComplete={props.OnTaskComplete}
+//         />
+//       );
+//     });
+//   };
+//   return <ul className="tasks__list no-bullet">{getTaskListJSX(tasks)}</ul>;
+// };
+
+const TaskList = (props) => {
       return (
+        <ul>
+          {props.tasks.map((task) => (
         <Task
           key={task.id}
           id={task.id}
           title={task.title}
           isComplete={task.isComplete}
-          onTaskComplete={props.taskComplete}
-        />
-      );
-    });
-  };
-  return <ul className="tasks__list no-bullet">{getTaskListJSX(tasks)}</ul>;
+          onTaskComplete={props.onTaskComplete}
+          />
+        ))}
+      </ul>
+  );
 };
+
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(
@@ -28,7 +45,7 @@ TaskList.propTypes = {
       isComplete: PropTypes.bool.isRequired,
     })
   ).isRequired,
-  taskComplete: PropTypes.func.isRequired,
+  onTaskComplete: PropTypes.func.isRequired,
 };
 
 export default TaskList;

@@ -18,15 +18,22 @@ const TASKS = [
 
 const App = () => {
   const [tasksData, setTasksData] = useState(TASKS);
+
+
+
+  const taskDataUpdater = (tasksData, id) =>
+  tasksData.map((task) => taskUpdater(task, id));
+
+  const taskUpdater = (task, id) => {
+    if (task.id === id) {
+      return { ...task, isComplete: !task.isComplete };
+    } else {
+      return task;
+    }
+  };
+
   const taskComplete = (id) => {
-    setTasksData((tasksData) =>
-      tasksData.map((task) => {
-        if (task.id === id) {
-          return { ...task, isComplete: !task.isComplete };
-        }else{
-          return task
-        }
-));
+    setTasksData((tasksData) => taskDataUpdater(tasksData, id));
   };
   return (
     <div className="App">
@@ -34,7 +41,9 @@ const App = () => {
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <TaskList tasks={tasksData} />
+        <TaskList 
+        tasks={tasksData}
+        onTaskComplete = {taskComplete} />
       </main>
     </div>
   );
