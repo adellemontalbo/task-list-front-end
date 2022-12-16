@@ -51,4 +51,3 @@ const App = () => {
 
 export default App;
 
-/* <div>{<TaskList tasks={TASKS} />}</div> */
