@@ -23,11 +23,12 @@ const getAllTasksApi = () => {
     });
 };
 
-const taskCompleteApi = (id) => {
+const taskCompleteApi = (id, currentStatus) => {
+  const endPoint = currentStatus ? 'mark_incomplete' : 'mark_complete';
   return axios
-    .patch(`${kBaseUrl}/${id}/mark_complete`)
+    .patch(`${kBaseUrl}/${id}/${endPoint}`)
     .then((response) => {
-      return convertFromApi(response.data);
+      return convertFromApi(response.data.task);
     })
     .catch((error) => {
       console.log(error);
@@ -60,18 +61,8 @@ const App = () => {
     getAllTasks();
   }, []);
 
-  // const taskCompleteApi = (id) => {
-  //   return axios.patch(`${kBaseUrl}/tasks/${id}/mark_complete`)
-  //   .then(response => {
-  //     return convertFromApi(response.data);
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
-  // };
-
-  const taskComplete = (id) => {
-    return taskCompleteApi(id).then((taskResult) => {
+  const taskComplete = (id, currentStatus) => {
+    return taskCompleteApi(id, currentStatus).then((taskResult) => {
       setTasksData((taskData) =>
         taskData.map((task) => {
           if (task.id === taskResult.id) {

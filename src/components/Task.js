@@ -5,16 +5,22 @@ import './Task.css';
 
 const Task = (props) => {
   const buttonClass = props.isComplete ? 'tasks__item__toggle--completed' : '';
+  // const completeHandler = props.isComplete ?
 
   return (
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => props.onTaskComplete(props.id)}
+        onClick={() => props.onTaskComplete(props.id, props.isComplete)}
       >
         {props.title}
       </button>
-      <button className="tasks__item__remove button" onClick={() => props.onDelete(props.id)}>x</button>
+      <button
+        className="tasks__item__remove button"
+        onClick={() => props.onDelete(props.id)}
+      >
+        x
+      </button>
     </li>
   );
 };
