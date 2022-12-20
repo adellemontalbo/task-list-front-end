@@ -14,8 +14,7 @@ const Task = (props) => {
       >
         {props.title}
       </button>
-      <button className="tasks__item__remove button">x</button>
-      <button onClick={() => props.onDelete(props.id)}>Delete Task</button>
+      <button className="tasks__item__remove button" onClick={() => props.onDelete(props.id)}>x</button>
     </li>
   );
 };

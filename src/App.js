@@ -1,46 +1,88 @@
 import React from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
-import { useState } from 'react';
 
-const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
-];
+const kBaseUrl = 'https://task-list-api-c17.herokuapp.com/tasks';
+
+const convertFromApi = (apiTask) => {
+  const {is_complete:isComplete , id, description, title} = apiTask;
+  const newTask = {isComplete, id, description, title};
+  return newTask;
+};
+
+
+const getAllTasksApi = () => {
+  return axios.get(`${kBaseUrl}`)
+  .then(response => {
+    return response.data.map(convertFromApi);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};
+
+const unregisterTaskApi = (id) => {
+  return axios.delete(`${kBaseUrl}/${id}`)
+  .then(response => {
+    return convertFromApi(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+};
+
 
 const App = () => {
-  const [tasksData, setTasksData] = useState(TASKS);
+  const [tasksData, setTasksData] = useState([]);
 
-  const taskDataUpdater = (tasksData, id) =>
-    tasksData.map((task) => taskUpdater(task, id));
+  const getAllTasks = () => {
+    return getAllTasksApi()
+    .then(tasks => {
+      // console.log(cats);
+      setTasksData(tasks);
+    });
+  };
 
-  const taskUpdater = (task, id) => {
-    if (task.id === id) {
-      return { ...task, isComplete: !task.isComplete };
-    } else {
-      return task;
-    }
+  useEffect(() => {
+    // data fetching code
+    getAllTasks();
+  }, []);
+
+  const taskCompleteApi = (id) => {
+    return axios.patch(`${kBaseUrl}/tasks/${id}/mark_complete`)
+    .then(response => {
+      return convertFromApi(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   };
 
   const taskComplete = (id) => {
-    setTasksData((tasksData) => taskDataUpdater(tasksData, id));
+    return taskCompleteApi(id)
+    .then(taskResult => {
+      setTasksData(taskData => taskData.map(task => {
+        if(task.id === taskResult.id) {
+          return taskResult;
+        } else {
+          return task;
+        }
+      }));
+    });
   };
+  
 
-  const deleteTask = (id) => {
-    setTasksData((tasksData) =>
-      tasksData.filter((task) => {
-        return task.id !== id;
+  const unregisterTask = (id) => {
+      return axios.delete(`${kBaseUrl}/${id}`)
+      .then(response => {
+        return convertFromApi(response.data);
       })
-    );
-  };
+      .catch(error => {
+        console.log(error);
+      });
+    };
 
   return (
     <div className="App">
@@ -51,7 +93,7 @@ const App = () => {
         <TaskList
           tasks={tasksData}
           onTaskComplete={taskComplete}
-          onDelete={deleteTask}
+          onDelete={unregisterTask}
         />
       </main>
     </div>
