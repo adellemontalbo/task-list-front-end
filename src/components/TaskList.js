@@ -4,21 +4,21 @@ import Task from './Task';
 import './TaskList.css';
 
 const TaskList = (props) => {
-      return (
-        <ul>
-          {props.tasks.map((task) => (
+  return (
+    <ul>
+      {props.tasks.map((task) => (
         <Task
           key={task.id}
           id={task.id}
           title={task.title}
           isComplete={task.isComplete}
           onTaskComplete={props.onTaskComplete}
-          />
-        ))}
-      </ul>
+          onDelete={props.onDelete}
+        />
+      ))}
+    </ul>
   );
 };
-
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(
@@ -29,6 +29,7 @@ TaskList.propTypes = {
     })
   ).isRequired,
   onTaskComplete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default TaskList;
