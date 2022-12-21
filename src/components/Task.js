@@ -5,7 +5,6 @@ import './Task.css';
 
 const Task = (props) => {
   const buttonClass = props.isComplete ? 'tasks__item__toggle--completed' : '';
-  // const completeHandler = props.isComplete ?
 
   return (
     <li className="tasks__item">
@@ -34,21 +33,3 @@ Task.propTypes = {
 };
 
 export default Task;
-
-// const Task = (props) => {
-//   const [complete, setComplete] = useState(props.isComplete);
-//   const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
-
-//   return (
-//     <li className="tasks__item">
-//     <h1>Title: {props.title} </h1>
-//     <h2>Id: {props.id} </h2>
-//       <button
-//         className={`tasks__item__toggle ${buttonClass}`}
-//         onClick={() => setComplete(!complete)}
-//       >
-//       </button>
-//       <button className="tasks__item__remove button">x</button>
-//     </li>
-//   );
-// };

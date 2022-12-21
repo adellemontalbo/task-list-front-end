@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
+import NewTaskForm from './components/NewTaskForm.js';
 
 const kBaseUrl = 'https://task-list-api-c17.herokuapp.com/tasks';
 
@@ -46,6 +47,19 @@ const unregisterTaskApi = (id) => {
     });
 };
 
+const addNewTaskApi = (formData) => {
+  const requestBody = { ...formData };
+
+  return axios
+    .post(`${kBaseUrl}`, requestBody)
+    .then((response) => {
+      return convertFromApi(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const App = () => {
   const [tasksData, setTasksData] = useState([]);
 
@@ -77,11 +91,16 @@ const App = () => {
 
   const unregisterTask = (id) => {
     return unregisterTaskApi(id).then((taskResult) => {
-      // setCatData(catData => catData.filter(cat => {
-      //   return cat.id !== catResult.id;
-      // }));
       return getAllTasks();
     });
+  };
+
+  const handleTaskSubmit = (data) => {
+    addNewTaskApi(data)
+      .then((newTask) => {
+        setTasksData([...tasksData, newTask]);
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -90,6 +109,7 @@ const App = () => {
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
+        <NewTaskForm handleTaskSubmit={handleTaskSubmit} />
         <TaskList
           tasks={tasksData}
           onTaskComplete={taskComplete}
